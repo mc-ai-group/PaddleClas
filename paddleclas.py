@@ -399,7 +399,7 @@ class PaddleClas(object):
     """PaddleClas.
     """
 
-    print_info()
+    # print_info()
 
     def __init__(self,
                  model_name: str=None,
