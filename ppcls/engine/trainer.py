@@ -28,7 +28,7 @@ import argparse
 import paddle
 import paddle.nn as nn
 import paddle.distributed as dist
-from visualdl import LogWriter
+# from visualdl import LogWriter
 
 from ppcls.utils.check import check_gpu
 from ppcls.utils.misc import AverageMeter
@@ -94,7 +94,7 @@ class Trainer(object):
             vdl_writer_path = os.path.join(self.output_dir, "vdl")
             if not os.path.exists(vdl_writer_path):
                 os.makedirs(vdl_writer_path)
-            self.vdl_writer = LogWriter(logdir=vdl_writer_path)
+            # self.vdl_writer = LogWriter(logdir=vdl_writer_path)
         logger.info('train with paddle {} and device {}'.format(
             paddle.__version__, self.device))
         # init members
