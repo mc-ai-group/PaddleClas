@@ -35,4 +35,6 @@ class ImageNetDataset(CommonDataset):
                 l = l.strip().split(" ")
                 self.images.append(os.path.join(self._img_root, l[0]))
                 self.labels.append(int(l[1]))
+                if not os.path.exists(self.images[-1]):
+                    print(self.images[-1])
                 assert os.path.exists(self.images[-1])
