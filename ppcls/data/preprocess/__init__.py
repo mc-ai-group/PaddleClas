@@ -16,6 +16,8 @@ from ppcls.data.preprocess.ops.autoaugment import ImageNetPolicy as RawImageNetP
 from ppcls.data.preprocess.ops.randaugment import RandAugment as RawRandAugment
 from ppcls.data.preprocess.ops.timm_autoaugment import RawTimmAutoAugment
 from ppcls.data.preprocess.ops.cutout import Cutout
+from ppcls.data.preprocess.ops.mc_aug import McAug
+from ppcls.data.preprocess.ops.mc_aug_table_int import McAugTableInt
 
 from ppcls.data.preprocess.ops.hide_and_seek import HideAndSeek
 from ppcls.data.preprocess.ops.random_erasing import RandomErasing
