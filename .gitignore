@@ -10,3 +10,4 @@ pretrained/
 _build/
 build/
 nohup.out
+.vscode
