@@ -58,9 +58,18 @@ class Predictor(object):
         pd_version = 0
         for v in paddle.__version__.split(".")[:3]:
             pd_version = 10 * pd_version + eval(v)
+        # 300版本开始, inference模型路径变更
+        if pd_version >= 300:
+            config = Config(
+                "../models/clas_table_int/inference.pdmodel",
+                "../models/clas_table_int/inference.pdiparams"
+            )
         # 在262版本中若使用新的路径传输方式, 会导致模型路径错误, 所以把判断条件提升到263版本
-        if pd_version == 0 or pd_version >= 263:
-            config = Config(inference_model_dir, model_prefix)
+        elif pd_version == 0 or pd_version >= 263:
+            config = Config(
+                "../models/clas_table_int/inference.pdmodel",
+                "../models/clas_table_int/inference.pdiparams"
+            )
         else:
             model_file = os.path.join(inference_model_dir, f"{model_prefix}.pdmodel")
             params_file = os.path.join(inference_model_dir, f"{model_prefix}.pdiparams")
