@@ -61,14 +61,14 @@ class Predictor(object):
         # 300版本开始, inference模型路径变更
         if pd_version >= 300:
             config = Config(
-                "../models/clas_table_int/inference.pdmodel",
-                "../models/clas_table_int/inference.pdiparams"
+                os.path.join(inference_model_dir, "inference.pdmodel"),
+                os.path.join(inference_model_dir, "inference.pdiparams")
             )
         # 在262版本中若使用新的路径传输方式, 会导致模型路径错误, 所以把判断条件提升到263版本
         elif pd_version == 0 or pd_version >= 263:
             config = Config(
-                "../models/clas_table_int/inference.pdmodel",
-                "../models/clas_table_int/inference.pdiparams"
+                os.path.join(inference_model_dir, "inference.pdmodel"),
+                os.path.join(inference_model_dir, "inference.pdiparams")
             )
         else:
             model_file = os.path.join(inference_model_dir, f"{model_prefix}.pdmodel")
