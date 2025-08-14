@@ -39,6 +39,16 @@ class Predictor(object):
 
     def predict(self, image):
         raise NotImplementedError
+    
+    def is_model_post_300(self, model_dir, model_prefix):
+        # 检查模型是否由paddle3.0之后的版本导出
+        json_file = os.path.join(model_dir, model_prefix + ".json")
+        pd_file = os.path.join(model_dir, model_prefix + ".pdiparams")
+        pd_info_file = os.path.join(model_dir, model_prefix + ".pdiparams.info")
+        for f in [json_file, pd_file, pd_info_file]:
+            if not os.path.exists(f):
+                return False
+        return True
 
     def create_paddle_predictor(self, args, inference_model_dir=None):
         if inference_model_dir is None:
@@ -58,19 +68,11 @@ class Predictor(object):
         pd_version = 0
         for v in paddle.__version__.split(".")[:3]:
             pd_version = 10 * pd_version + eval(v)
-        # 300版本开始, inference模型路径变更
-        if pd_version >= 300:
-            config = Config(
-                os.path.join(inference_model_dir, "inference.pdmodel"),
-                os.path.join(inference_model_dir, "inference.pdiparams")
-            )
-        # 在262版本中若使用新的路径传输方式, 会导致模型路径错误, 所以把判断条件提升到263版本
-        elif pd_version == 0 or pd_version >= 263:
-            config = Config(
-                os.path.join(inference_model_dir, "inference.pdmodel"),
-                os.path.join(inference_model_dir, "inference.pdiparams")
-            )
+        # 300版本导出的模型文件结构变更, 使用新加载方式
+        if self.is_model_post_300(inference_model_dir, model_prefix):
+            config = Config(inference_model_dir, model_prefix)
         else:
+            # 其他的一律使用老的方式加载
             model_file = os.path.join(inference_model_dir, f"{model_prefix}.pdmodel")
             params_file = os.path.join(inference_model_dir, f"{model_prefix}.pdiparams")
             config = Config(model_file, params_file)
