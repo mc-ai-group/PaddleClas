@@ -42,11 +42,18 @@ class Predictor(object):
     
     def is_model_post_300(self, model_dir, model_prefix):
         # 检查模型是否由paddle3.0之后的版本导出
-        json_file = os.path.join(model_dir, model_prefix + ".json")
-        pd_file = os.path.join(model_dir, model_prefix + ".pdiparams")
-        pd_info_file = os.path.join(model_dir, model_prefix + ".pdiparams.info")
-        for f in [json_file, pd_file, pd_info_file]:
-            if not os.path.exists(f):
+        # 文件扩展名-是否应该存在对照表
+        file_exist_table = {
+            '.json': True,
+            '.pdiparams': True,
+            '.pdmodel': False,
+            '.pdiparams.info': False,
+        }
+        # 存在状态检查
+        for ext, should_exist in file_exist_table.items():
+            f = os.path.join(model_dir, model_prefix + ext)
+            existing = os.path.exists(f)
+            if existing != should_exist:
                 return False
         return True
 
